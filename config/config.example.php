@@ -19,8 +19,11 @@ return [
     ],
     'app' => [
         'name'           => 'Project Exodia',
-        'url'            => 'http://localhost:8000',
+        'url'            => 'http://localhost/exodia',
         'env'            => 'development', // 'development' or 'production'
-        'session_secure' => false,         // Set to true when serving over HTTPS
+        // Session security: When false, includes/session.php automatically detects HTTPS
+        // connections (directly or via verified Cloudflare Tunnel / loopback reverse proxies)
+        // and enables the Secure cookie flag automatically without breaking local HTTP.
+        'session_secure' => false,
     ],
 ];
