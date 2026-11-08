@@ -1,56 +1,75 @@
 /**
- * Project Exodia — Core Design System & Theme
- * Dark Futuristic Messaging Aesthetic
+ * Project Exodia — macOS Design System & Core Styles
+ * Inspired by macOS Sequoia & Apple Desktop Interface Guidelines
  */
 
 :root {
-    --bg-darkest: #07090e;
-    --bg-primary: #0b0f19;
-    --bg-surface: #121826;
-    --bg-card: rgba(18, 24, 38, 0.85);
-    --bg-card-hover: rgba(24, 32, 50, 0.9);
+    /* macOS Window & Surface System */
+    --macos-desktop-bg: #111113;
+    --macos-window-bg: rgba(26, 26, 30, 0.85);
+    --macos-window-glass: rgba(22, 22, 26, 0.75);
+    --macos-sidebar-bg: rgba(20, 20, 24, 0.8);
+    --macos-surface: rgba(36, 36, 42, 0.7);
+    --macos-surface-hover: rgba(50, 50, 58, 0.7);
+    --macos-surface-active: rgba(60, 60, 70, 0.8);
+    --macos-input-bg: rgba(18, 18, 22, 0.75);
+    --macos-input-focus-bg: rgba(24, 24, 28, 0.95);
+
+    /* Apple System Colors */
+    --macos-blue: #0a84ff;
+    --macos-blue-hover: #0071e3;
+    --macos-blue-subtle: rgba(10, 132, 255, 0.15);
+    --macos-purple: #af52de;
+    --macos-purple-subtle: rgba(175, 82, 222, 0.15);
+    --macos-cyan: #5ac8fa;
+    --macos-green: #30d158;
+    --macos-green-bg: rgba(48, 209, 88, 0.14);
+    --macos-red: #ff453a;
+    --macos-red-bg: rgba(255, 69, 58, 0.14);
+    --macos-yellow: #ffd60a;
+    --macos-yellow-bg: rgba(255, 214, 10, 0.14);
+
+    /* Traffic Lights */
+    --traffic-red: #ff5f56;
+    --traffic-yellow: #ffbd2e;
+    --traffic-green: #27c93f;
+
+    /* Exodia Refined Accent */
+    --exodia-gradient: linear-gradient(135deg, #0a84ff 0%, #af52de 100%);
+    --exodia-accent: #0a84ff;
+
+    /* Typography / Text Levels */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(235, 235, 245, 0.68);
+    --text-muted: rgba(235, 235, 245, 0.42);
+
+    /* Borders & Separators */
     --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-highlight: rgba(121, 40, 202, 0.35);
-    --border-focus: #0070f3;
-    
-    --text-primary: #f3f6fc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    
-    --accent-purple: #7928ca;
-    --accent-purple-light: #9e47ff;
-    --accent-blue: #0070f3;
-    --accent-cyan: #00d4ff;
-    
-    --gradient-brand: linear-gradient(135deg, #7928ca 0%, #0070f3 100%);
-    --gradient-glow: radial-gradient(circle at 50% 0%, rgba(121, 40, 202, 0.25) 0%, rgba(0, 112, 243, 0.1) 40%, transparent 70%);
-    
-    --status-success: #10b981;
-    --status-success-bg: rgba(16, 185, 129, 0.12);
-    --status-success-border: rgba(16, 185, 129, 0.3);
-    
-    --status-error: #ef4444;
-    --status-error-bg: rgba(239, 68, 68, 0.12);
-    --status-error-border: rgba(239, 68, 68, 0.3);
-    
-    --status-warning: #f59e0b;
-    --status-warning-bg: rgba(245, 158, 11, 0.12);
-    --status-warning-border: rgba(245, 158, 11, 0.3);
-    
-    --status-info: #0ea5e9;
-    --status-info-bg: rgba(14, 165, 233, 0.12);
-    --status-info-border: rgba(14, 165, 233, 0.3);
+    --border-separator: rgba(255, 255, 255, 0.06);
+    --border-focus: rgba(10, 132, 255, 0.6);
+    --border-highlight: rgba(175, 82, 222, 0.25);
 
+    /* Radii Scale */
+    --radius-window: 14px;
+    --radius-card: 12px;
+    --radius-control: 8px;
     --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-full: 9999px;
+    --radius-pill: 9999px;
 
-    --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 50px -20px rgba(121, 40, 202, 0.25);
-    --shadow-glow: 0 0 20px rgba(0, 112, 243, 0.35);
+    /* Elevation & Shadows */
+    --shadow-window: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.07);
+    --shadow-dropdown: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.09);
+    --shadow-btn: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    /* Transitions */
+    --transition-fast: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ====================================================
+   CSS Reset & Base Typography
+==================================================== */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -58,143 +77,334 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    background-color: var(--bg-darkest);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: var(--macos-desktop-bg);
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     position: relative;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Background Atmospheric Glow */
+/* Atmospheric Desktop Subtle Glow */
 .auth-bg-glow {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: var(--gradient-glow);
+    background: radial-gradient(circle at 50% 0%, rgba(10, 132, 255, 0.12) 0%, rgba(175, 82, 222, 0.06) 35%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
 
-/* Brand Badge */
+/* ====================================================
+   macOS Window Frame & Traffic Lights
+==================================================== */
+.macos-traffic-lights {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.traffic-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: var(--transition-fast);
+}
+
+.traffic-red { background-color: var(--traffic-red); }
+.traffic-yellow { background-color: var(--traffic-yellow); }
+.traffic-green { background-color: var(--traffic-green); }
+
+.macos-window-card {
+    background: var(--macos-window-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-window);
+    box-shadow: var(--shadow-window);
+    overflow: hidden;
+}
+
+/* ====================================================
+   Brand Badges & Labels
+==================================================== */
 .brand-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.04);
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-pill);
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-cyan);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--macos-cyan);
     margin-bottom: 12px;
 }
 
 .badge-dot {
-    width: 7px;
-    height: 7px;
-    background-color: var(--accent-cyan);
+    width: 6px;
+    height: 6px;
+    background-color: var(--macos-cyan);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent-cyan);
+    box-shadow: 0 0 6px var(--macos-cyan);
 }
 
-/* Buttons */
+/* ====================================================
+   macOS Navigation Bar
+==================================================== */
+.dashboard-nav {
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(20, 20, 24, 0.82);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.nav-brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 3px;
+    border-radius: var(--radius-control);
+    border: 1px solid var(--border-separator);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background: var(--macos-surface-hover);
+}
+
+.nav-link.active {
+    color: #ffffff;
+    background: var(--macos-surface-active);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.nav-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--macos-green);
+    background: var(--macos-green-bg);
+    border: 1px solid rgba(48, 209, 88, 0.25);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+}
+
+.status-indicator-live {
+    width: 6px;
+    height: 6px;
+    background: var(--macos-green);
+    border-radius: 50%;
+    animation: statusPulse 2s infinite ease-in-out;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+.inline-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+/* ====================================================
+   Standardized Buttons & Controls
+==================================================== */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 24px;
-    border-radius: var(--radius-md);
-    font-size: 0.95rem;
-    font-weight: 600;
+    height: 38px;
+    padding: 0 18px;
+    border-radius: var(--radius-control);
+    font-size: 0.88rem;
+    font-weight: 500;
     cursor: pointer;
     text-decoration: none;
-    border: none;
-    transition: var(--transition);
+    border: 1px solid transparent;
+    transition: var(--transition-fast);
+    white-space: nowrap;
+    user-select: none;
 }
 
 .btn:focus-visible {
-    outline: 2px solid var(--border-focus);
-    outline-offset: 3px;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--border-focus);
 }
 
 .btn-primary {
-    background: var(--gradient-brand);
+    background: var(--macos-blue);
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(121, 40, 202, 0.35);
+    box-shadow: var(--shadow-btn);
 }
 
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(121, 40, 202, 0.5), 0 0 15px rgba(0, 112, 243, 0.4);
+.btn-primary:hover:not(:disabled) {
+    background: var(--macos-blue-hover);
+    transform: translateY(-0.5px);
 }
 
-.btn-primary:active {
+.btn-primary:active:not(:disabled) {
     transform: translateY(0);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
     border: 1px solid var(--border-subtle);
 }
 
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
+.btn-secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+.btn-destructive {
+    background: var(--macos-red-bg);
+    color: #ff9b94;
+    border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+.btn-destructive:hover:not(:disabled) {
+    background: rgba(255, 69, 58, 0.25);
+    color: #ffffff;
 }
 
 .btn-sm {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+    height: 30px;
+    padding: 0 12px;
+    font-size: 0.82rem;
+    border-radius: var(--radius-sm);
 }
 
-/* Alerts */
+.btn-lg {
+    height: 44px;
+    padding: 0 24px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ====================================================
+   Cards & Layout Components
+==================================================== */
+.card {
+    background: var(--macos-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+}
+
+/* ====================================================
+   macOS Alerts & Banners
+==================================================== */
 .alert {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    border-radius: var(--radius-md);
-    font-size: 0.9rem;
-    margin-bottom: 20px;
+    border-radius: var(--radius-control);
+    font-size: 0.88rem;
+    margin-bottom: 18px;
+    backdrop-filter: blur(12px);
 }
 
 .alert-icon {
-    font-size: 1.1rem;
+    font-size: 1rem;
     flex-shrink: 0;
 }
 
 .alert-success {
-    background-color: var(--status-success-bg);
-    border: 1px solid var(--status-success-border);
-    color: #6ee7b7;
+    background-color: var(--macos-green-bg);
+    border: 1px solid rgba(48, 209, 88, 0.3);
+    color: #a7f3d0;
 }
 
 .alert-error {
-    background-color: var(--status-error-bg);
-    border: 1px solid var(--status-error-border);
-    color: #fca5a5;
+    background-color: var(--macos-red-bg);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    color: #fecaca;
 }
 
 .alert-warning {
-    background-color: var(--status-warning-bg);
-    border: 1px solid var(--status-warning-border);
-    color: #fcd34d;
+    background-color: var(--macos-yellow-bg);
+    border: 1px solid rgba(255, 214, 10, 0.3);
+    color: #fef08a;
 }
 
 .alert-info {
-    background-color: var(--status-info-bg);
-    border: 1px solid var(--status-info-border);
-    color: #7dd3fc;
+    background-color: var(--macos-blue-subtle);
+    border: 1px solid rgba(10, 132, 255, 0.3);
+    color: #bae6fd;
+}
+
+/* ====================================================
+   Footer
+==================================================== */
+.dashboard-footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-separator);
+    margin-top: auto;
 }
