@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="operative-actions">
+                    <a href="messages.php?user_id=${c.user_id}" class="btn-contact-add" style="text-decoration: none;">Message</a>
                     <button 
                         type="button" 
                         class="btn-contact-remove" 
