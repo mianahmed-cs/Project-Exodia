@@ -3,7 +3,10 @@
  *
  * Vanilla JavaScript (ES6+) for:
  *  - Real-time conversation list retrieval and selection
- *  - Incremental AJAX polling for new messages (after_id)
+ *  - Incremental activity event synchronization (deletions, reactions, creations)
+ *  - Quoted message replies with preview bar and jumping to referenced bubbles
+ *  - Message emoji reactions (👍, ❤️, 😂, 😮, 😢, 😡) with real-time badges
+ *  - Delete for Me and Delete for Everyone with confirmation
  *  - Instant message sending with CSRF protection and validation
  *  - Sidebar tabs (Active Chats vs Contacts Roster)
  *  - Mobile responsive panel toggling
