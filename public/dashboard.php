@@ -41,6 +41,7 @@ $email = $user['email'] ?? '';
             <div class="nav-links">
                 <a href="dashboard.php" class="nav-link active" id="navDashboard" aria-current="page">Terminal</a>
                 <a href="contacts.php" class="nav-link" id="navContacts">Contacts</a>
+                <a href="messages.php" class="nav-link" id="navMessages">Messages</a>
             </div>
 
             <div class="nav-user-actions">
@@ -87,9 +88,12 @@ $email = $user['email'] ?? '';
                 </div>
 
                 <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-                    <a href="contacts.php" class="btn btn-primary" id="dashboardContactsAction">
-                        <span>Open Contacts &amp; Discovery</span>
+                    <a href="messages.php" class="btn btn-primary" id="dashboardMessagesAction">
+                        <span>Launch Direct Messages</span>
                         <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                    <a href="contacts.php" class="btn btn-secondary" id="dashboardContactsAction">
+                        <span>Manage Contacts</span>
                     </a>
                 </div>
             </section>

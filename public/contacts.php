@@ -48,6 +48,7 @@ $csrfToken = generate_csrf_token();
             <div class="nav-links">
                 <a href="dashboard.php" class="nav-link" id="navDashboard">Terminal</a>
                 <a href="contacts.php" class="nav-link active" id="navContacts" aria-current="page">Contacts</a>
+                <a href="messages.php" class="nav-link" id="navMessages">Messages</a>
             </div>
 
             <div class="nav-user-actions">
