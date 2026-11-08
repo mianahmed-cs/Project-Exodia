@@ -29,6 +29,7 @@ $suites = [
     'Phase 3 — End-to-End Messaging'      => __DIR__ . '/test_messaging_e2e.php',
     'Phase 4 — Master User Journey'       => __DIR__ . '/test_full_journey.php',
     'Cloudflare Tunnel & Remote Messaging' => __DIR__ . '/test_remote_messaging.php',
+    'Advanced Messaging (Delete, Reply, React)' => __DIR__ . '/test_advanced_messaging.php',
 ];
 
 $allPassed = true;
