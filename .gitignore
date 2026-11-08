@@ -12,6 +12,8 @@ config/config.php
 logs/
 tmp/
 temp/
+storage/attachments/*
+!storage/attachments/.gitkeep
 
 # Operating System & IDE Artifacts
 .DS_Store
