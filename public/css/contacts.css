@@ -1,0 +1,306 @@
+/**
+ * Project Exodia — Contacts & User Discovery Styles
+ * Responsive grid, operative cards, search bar, and action controls
+ */
+
+.contacts-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+    .contacts-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Nav Link Enhancements */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+    color: var(--accent-cyan);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+}
+
+/* Search Box Component */
+.search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    background: rgba(10, 14, 24, 0.75);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.25);
+    background: rgba(15, 21, 35, 0.95);
+}
+
+/* Operative List & Cards */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.panel-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: rgba(121, 40, 202, 0.2);
+    border: 1px solid var(--border-highlight);
+    color: var(--accent-purple-light);
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+}
+
+.operative-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 140px;
+}
+
+.operative-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: rgba(11, 15, 25, 0.65);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.operative-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(16, 22, 38, 0.85);
+    transform: translateY(-1px);
+}
+
+.operative-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.operative-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--gradient-brand);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(121, 40, 202, 0.35);
+}
+
+.operative-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.operative-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.operative-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.operative-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Action Buttons & Pills */
+.btn-contact-add {
+    background: rgba(0, 112, 243, 0.15);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-contact-add:hover:not(:disabled) {
+    background: rgba(0, 112, 243, 0.35);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+}
+
+.btn-contact-remove {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-contact-remove:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+}
+
+.badge-connected {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--status-success);
+    background: var(--status-success-bg);
+    border: 1px solid var(--status-success-border);
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+
+/* Empty & Loading States */
+.state-box {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(10, 14, 24, 0.4);
+    border: 1px dashed var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.state-icon {
+    font-size: 1.8rem;
+    opacity: 0.6;
+}
+
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent-cyan);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Live Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 380px;
+}
+
+.toast {
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-success {
+    background: #064e3b;
+    border: 1px solid #10b981;
+    color: #ecfdf5;
+}
+
+.toast-error {
+    background: #7f1d1d;
+    border: 1px solid #ef4444;
+    color: #fef2f2;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}

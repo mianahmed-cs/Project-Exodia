@@ -26,6 +26,7 @@ $email = $user['email'] ?? '';
     <title>Secure Dashboard | Project Exodia</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/contacts.css">
 </head>
 <body class="dashboard-body">
     <div class="auth-bg-glow" aria-hidden="true"></div>
@@ -35,6 +36,11 @@ $email = $user['email'] ?? '';
             <div class="brand-badge">
                 <span class="badge-dot"></span>
                 <span>PROJECT EXODIA</span>
+            </div>
+
+            <div class="nav-links">
+                <a href="dashboard.php" class="nav-link active" id="navDashboard" aria-current="page">Terminal</a>
+                <a href="contacts.php" class="nav-link" id="navContacts">Contacts</a>
             </div>
 
             <div class="nav-user-actions">
@@ -78,6 +84,13 @@ $email = $user['email'] ?? '';
                         <span class="stat-label">Session Security</span>
                         <span class="stat-value text-accent">HttpOnly + SameSite</span>
                     </div>
+                </div>
+
+                <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="contacts.php" class="btn btn-primary" id="dashboardContactsAction">
+                        <span>Open Contacts &amp; Discovery</span>
+                        <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
                 </div>
             </section>
 
