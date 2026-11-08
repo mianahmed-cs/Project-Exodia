@@ -1,5 +1,5 @@
 /**
- * Project Exodia — Authentication and Dashboard Styles
+ * Project Exodia — macOS Authentication & Dashboard Styles
  */
 
 /* Container and Layout */
@@ -7,13 +7,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px 16px;
-    background: radial-gradient(circle at 50% 10%, #151a2e 0%, #07090e 70%);
+    min-height: 100vh;
+    padding: 40px 16px;
+    background-color: var(--macos-desktop-bg);
 }
 
 .auth-container {
     width: 100%;
-    max-width: 460px;
+    max-width: 440px;
     position: relative;
     z-index: 1;
     margin: auto;
@@ -21,49 +22,56 @@
 
 .auth-header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .auth-title {
-    font-size: 1.85rem;
-    font-weight: 800;
+    font-size: 1.75rem;
+    font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text-primary);
     margin-bottom: 6px;
 }
 
 .auth-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--text-secondary);
 }
 
-/* Card */
+/* macOS Window Card */
 .auth-card {
-    background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: var(--macos-window-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 36px 32px;
-    box-shadow: var(--shadow-card);
+    border-radius: var(--radius-window);
+    padding: 28px 32px 32px;
+    box-shadow: var(--shadow-window);
     position: relative;
 }
 
-.auth-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 15%;
-    right: 15%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border-highlight), transparent);
+.auth-card-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-separator);
+}
+
+.auth-window-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
 }
 
 /* Form Groups */
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .form-group {
@@ -79,8 +87,8 @@
 }
 
 .form-label {
-    font-size: 0.88rem;
-    font-weight: 600;
+    font-size: 0.84rem;
+    font-weight: 500;
     color: var(--text-secondary);
 }
 
@@ -88,24 +96,27 @@
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .form-input {
     width: 100%;
-    padding: 12px 14px;
-    background: rgba(10, 14, 24, 0.7);
+    height: 40px;
+    padding: 0 14px;
+    background: var(--macos-input-bg);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-control);
     color: var(--text-primary);
-    font-size: 0.95rem;
-    transition: var(--transition);
+    font-size: 0.92rem;
+    font-family: inherit;
+    transition: var(--transition-fast);
 }
 
 .form-input:focus {
     outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.2);
-    background: rgba(15, 21, 35, 0.9);
+    border-color: var(--macos-blue);
+    background: var(--macos-input-focus-bg);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
 }
 
 .form-input::placeholder {
@@ -114,61 +125,68 @@
 
 /* Password Visibility Toggle */
 .with-toggle .form-input {
-    padding-right: 46px;
+    padding-right: 42px;
 }
 
 .pwd-toggle-btn {
     position: absolute;
-    right: 8px;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
     background: transparent;
     border: none;
-    padding: 8px;
     cursor: pointer;
     color: var(--text-muted);
-    font-size: 1rem;
+    font-size: 0.95rem;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
+    transition: var(--transition-fast);
 }
 
 .pwd-toggle-btn:hover {
     color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .pwd-toggle-btn:focus-visible {
-    outline: 2px solid var(--border-focus);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--macos-blue);
 }
 
 /* Validation Hints and Errors */
 .form-hint {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--text-muted);
 }
 
 .form-error {
-    font-size: 0.8rem;
-    color: var(--status-error);
+    font-size: 0.78rem;
+    color: #ff9b94;
     margin-top: 2px;
 }
 
 .has-error .form-input {
-    border-color: var(--status-error);
-    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(255, 69, 58, 0.6);
+    background: rgba(255, 69, 58, 0.05);
 }
 
 .has-error .form-input:focus {
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.25);
 }
 
 /* Form Actions */
 .form-actions {
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .form-actions .btn {
     width: 100%;
+    height: 42px;
+    font-size: 0.92rem;
 }
 
 .btn-arrow {
@@ -176,96 +194,39 @@
 }
 
 .btn:hover .btn-arrow {
-    transform: translateX(4px);
+    transform: translateX(3px);
 }
 
 /* Footer Navigation */
 .auth-footer {
-    margin-top: 24px;
+    margin-top: 22px;
     text-align: center;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
 .auth-link {
-    color: var(--accent-cyan);
+    color: var(--macos-blue);
     text-decoration: none;
-    font-weight: 600;
-    transition: var(--transition);
+    font-weight: 500;
+    transition: var(--transition-fast);
 }
 
 .auth-link:hover {
-    color: #ffffff;
+    color: var(--macos-blue-hover);
     text-decoration: underline;
 }
 
-.auth-link:focus-visible {
-    outline: 2px solid var(--border-focus);
-    border-radius: 2px;
-}
-
-/* Dashboard Specific Layout */
+/* ====================================================
+   Dashboard / Operative Terminal Styles
+==================================================== */
 .dashboard-body {
-    background-color: var(--bg-darkest);
-}
-
-.dashboard-nav {
-    border-bottom: 1px solid var(--border-subtle);
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.nav-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.nav-user-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.nav-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    color: var(--status-success);
-    background: var(--status-success-bg);
-    border: 1px solid var(--status-success-border);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-}
-
-.status-indicator-live {
-    width: 6px;
-    height: 6px;
-    background: var(--status-success);
-    border-radius: 50%;
-    animation: pulseGlow 2s infinite;
-}
-
-@keyframes pulseGlow {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.9); }
-}
-
-.inline-form {
-    display: inline-block;
-    margin: 0;
+    background-color: var(--macos-desktop-bg);
 }
 
 .dashboard-main {
     flex: 1;
-    padding: 40px 24px;
+    padding: 36px 24px 48px;
     position: relative;
     z-index: 1;
 }
@@ -275,94 +236,92 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 28px;
-}
-
-.card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 32px;
+    gap: 24px;
 }
 
 .dashboard-hero {
-    background: linear-gradient(135deg, rgba(21, 27, 44, 0.9) 0%, rgba(13, 17, 28, 0.95) 100%);
-    border: 1px solid var(--border-highlight);
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, rgba(26, 26, 32, 0.95) 0%, rgba(18, 18, 22, 0.98) 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-window);
+    box-shadow: var(--shadow-card);
+    padding: 32px;
 }
 
 .hero-badge {
     font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    color: var(--accent-purple-light);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--macos-cyan);
     margin-bottom: 8px;
+    text-transform: uppercase;
 }
 
 .hero-title {
-    font-size: 2.2rem;
-    font-weight: 800;
+    font-size: 2.1rem;
+    font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
 }
 
 .highlight-text {
-    background: var(--gradient-brand);
+    background: var(--exodia-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
     color: var(--text-secondary);
-    font-size: 1.05rem;
-    max-width: 650px;
+    font-size: 1rem;
+    max-width: 640px;
     margin-bottom: 28px;
+    line-height: 1.55;
 }
 
 .session-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    gap: 14px;
 }
 
 .stat-card {
-    background: rgba(10, 14, 24, 0.6);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 16px;
+    background: var(--macos-input-bg);
+    border: 1px solid var(--border-separator);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
 .stat-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: var(--text-muted);
 }
 
 .stat-value {
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
 .text-accent {
-    color: var(--accent-cyan);
+    color: var(--macos-cyan);
 }
 
 .overview-card .card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 18px;
     color: var(--text-primary);
 }
 
 .system-checklist {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
 }
 
 .check-item {
@@ -375,49 +334,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    background: var(--status-success-bg);
-    border: 1px solid var(--status-success-border);
-    color: var(--status-success);
+    width: 22px;
+    height: 22px;
+    background: var(--macos-green-bg);
+    border: 1px solid rgba(48, 209, 88, 0.3);
+    color: var(--macos-green);
     border-radius: 50%;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     flex-shrink: 0;
     margin-top: 2px;
 }
 
 .check-content strong {
     display: block;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-primary);
     margin-bottom: 2px;
 }
 
 .check-content p {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-secondary);
     line-height: 1.4;
-}
-
-.dashboard-footer {
-    text-align: center;
-    padding: 24px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-subtle);
 }
 
 /* Responsive Breakpoints */
 @media (max-width: 640px) {
     .auth-card {
-        padding: 28px 20px;
+        padding: 24px 20px;
     }
 
     .hero-title {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
     }
 
     .nav-container {
-        padding: 12px 16px;
+        padding: 10px 16px;
     }
 }

@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHeader = document.getElementById('chatHeader');
     const chatHeaderName = document.getElementById('chatHeaderName');
     const chatHeaderStatus = document.getElementById('chatHeaderStatus');
+    const chatHeaderAvatar = document.getElementById('chatHeaderAvatar');
     const chatBackBtn = document.getElementById('chatBackBtn');
     const chatMessages = document.getElementById('chatMessages');
     const chatComposer = document.getElementById('chatComposer');
@@ -294,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (chatHeaderName) chatHeaderName.textContent = otherUsername;
         if (chatHeaderStatus) chatHeaderStatus.textContent = 'Active Encrypted Channel';
+        if (chatHeaderAvatar) chatHeaderAvatar.textContent = getInitials(otherUsername);
         if (messageInput) {
             messageInput.disabled = false;
             messageInput.focus();

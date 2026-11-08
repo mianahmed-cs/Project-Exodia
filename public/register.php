@@ -125,6 +125,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </header>
 
         <section class="auth-card" aria-label="Registration Form">
+            <div class="auth-card-titlebar" aria-hidden="true">
+                <div class="macos-traffic-lights">
+                    <span class="traffic-dot traffic-red"></span>
+                    <span class="traffic-dot traffic-yellow"></span>
+                    <span class="traffic-dot traffic-green"></span>
+                </div>
+                <span class="auth-window-label">Create Account</span>
+                <span style="width: 52px;"></span>
+            </div>
+
             <?php if (!empty($errors['general'])): ?>
                 <div class="alert alert-error" role="alert" id="general-error">
                     <span class="alert-icon" aria-hidden="true">&#9888;</span>

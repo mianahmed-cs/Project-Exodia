@@ -6,6 +6,7 @@
  *  - Interactive conversation sidebar (active chats & contacts directory)
  *  - Near-real-time direct messaging with AJAX polling
  *  - Responsive desktop and mobile panels
+ *  - macOS-inspired refined glass aesthetics
  *  - Full CSRF, XSS, and authorization enforcement
  */
 
@@ -44,9 +45,16 @@ $csrfToken = generate_csrf_token();
     <!-- Navigation Bar -->
     <nav class="dashboard-nav" aria-label="Main Navigation">
         <div class="nav-container">
-            <div class="brand-badge">
-                <span class="badge-dot"></span>
-                <span>PROJECT EXODIA</span>
+            <div class="nav-brand-group">
+                <div class="macos-traffic-lights" aria-hidden="true">
+                    <span class="traffic-dot traffic-red"></span>
+                    <span class="traffic-dot traffic-yellow"></span>
+                    <span class="traffic-dot traffic-green"></span>
+                </div>
+                <div class="brand-badge" style="margin-bottom: 0;">
+                    <span class="badge-dot"></span>
+                    <span>PROJECT EXODIA</span>
+                </div>
             </div>
 
             <div class="nav-links">
@@ -58,7 +66,7 @@ $csrfToken = generate_csrf_token();
             <div class="nav-user-actions">
                 <span class="nav-status-badge">
                     <span class="status-indicator-live"></span>
-                    <span>Encrypted Mesh</span>
+                    <span>Encrypted</span>
                 </span>
                 <form action="logout.php" method="POST" class="inline-form">
                     <?= csrf_input_field() ?>
@@ -76,22 +84,28 @@ $csrfToken = generate_csrf_token();
         <!-- Sidebar Panel: Conversations & Contacts -->
         <aside class="sidebar-panel" aria-label="Conversations Sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-title">
-                    <span aria-hidden="true">⚡</span> Transmissions
-                </h2>
-                <input
-                    type="text"
-                    id="searchFilterInput"
-                    class="sidebar-search"
-                    placeholder="Filter conversations or roster..."
-                    autocomplete="off"
-                    aria-label="Filter conversations or contacts"
-                >
+                <div class="sidebar-header-top">
+                    <h2 class="sidebar-title">Messages</h2>
+                    <span class="sidebar-count-badge" id="sidebarCountBadge" aria-hidden="true"></span>
+                </div>
+                <div class="sidebar-search-wrap">
+                    <svg class="sidebar-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input
+                        type="text"
+                        id="searchFilterInput"
+                        class="sidebar-search"
+                        placeholder="Search conversations..."
+                        autocomplete="off"
+                        aria-label="Filter conversations or contacts"
+                    >
+                </div>
             </div>
 
-            <div class="sidebar-tabs" role="tablist">
-                <button type="button" class="sidebar-tab active" id="tabChats" role="tab" aria-selected="true">Chats</button>
-                <button type="button" class="sidebar-tab" id="tabContacts" role="tab" aria-selected="false">Contacts</button>
+            <div class="sidebar-tabs-container">
+                <div class="sidebar-tabs" role="tablist">
+                    <button type="button" class="sidebar-tab active" id="tabChats" role="tab" aria-selected="true">Chats</button>
+                    <button type="button" class="sidebar-tab" id="tabContacts" role="tab" aria-selected="false">Contacts</button>
+                </div>
             </div>
 
             <div class="sidebar-list">
@@ -114,24 +128,32 @@ $csrfToken = generate_csrf_token();
         <main class="chat-panel" aria-label="Active Conversation">
             <!-- Initial Welcome State (Shown when no chat is selected) -->
             <div id="chatEmptyState" class="chat-empty-state">
-                <span class="chat-empty-icon" aria-hidden="true">💬</span>
-                <h3 class="chat-empty-title">Secure Transmission Terminal</h3>
+                <div class="chat-empty-icon-wrap" aria-hidden="true">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </div>
+                <h3 class="chat-empty-title">Select a Conversation</h3>
                 <p class="chat-empty-subtitle">
-                    Select a conversation from the sidebar or click on any contact to initialize an encrypted direct channel.
+                    Choose a conversation from the sidebar or select an operative from your contacts to start chatting.
                 </p>
-                <a href="contacts.php" class="btn btn-secondary btn-sm" style="margin-top: 12px;">
-                    Discover New Operatives
+                <a href="contacts.php" class="btn btn-secondary btn-sm" style="margin-top: 6px;">
+                    <span>Discover Operatives</span>
                 </a>
             </div>
 
             <!-- Chat Header -->
             <header id="chatHeader" class="chat-header" style="display: none;">
                 <button type="button" id="chatBackBtn" class="chat-back-btn" aria-label="Return to conversations list">
-                    &#8592;
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
+                <div class="chat-header-avatar" id="chatHeaderAvatar" aria-hidden="true">OP</div>
                 <div class="chat-header-info">
                     <h3 id="chatHeaderName" class="chat-header-name">Operative</h3>
-                    <span id="chatHeaderStatus" class="chat-header-status">Encrypted Direct Channel</span>
+                    <div class="chat-header-meta">
+                        <span class="chat-status-dot"></span>
+                        <span id="chatHeaderStatus" class="chat-header-status">Encrypted Direct Channel</span>
+                    </div>
                 </div>
             </header>
 
@@ -140,17 +162,21 @@ $csrfToken = generate_csrf_token();
 
             <!-- Message Composer -->
             <footer id="chatComposer" class="chat-composer" style="display: none;">
-                <textarea
-                    id="messageInput"
-                    class="composer-input"
-                    rows="1"
-                    placeholder="Type an encrypted message... (Press Enter to send)"
-                    aria-label="Message content"
-                    maxlength="5000"
-                ></textarea>
-                <button type="button" id="sendBtn" class="composer-send" aria-label="Send message">
-                    <span aria-hidden="true">&#10148;</span>
-                </button>
+                <div class="composer-pill">
+                    <textarea
+                        id="messageInput"
+                        class="composer-input"
+                        rows="1"
+                        placeholder="iMessage"
+                        aria-label="Message content"
+                        maxlength="5000"
+                    ></textarea>
+                    <button type="button" id="sendBtn" class="composer-send" aria-label="Send message">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 19V5M5 12l7-7 7 7"/>
+                        </svg>
+                    </button>
+                </div>
             </footer>
         </main>
     </div>

@@ -1,0 +1,397 @@
+/**
+ * Project Exodia — macOS Landing Page Styles
+ */
+
+.landing-nav {
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(20, 20, 24, 0.78);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.landing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Hero Section */
+.landing-hero {
+    padding: 72px 0 48px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(10, 132, 255, 0.12);
+    border: 1px solid rgba(10, 132, 255, 0.28);
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--macos-blue);
+    margin-bottom: 24px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 18px;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-title .gradient-text {
+    background: var(--exodia-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+}
+
+.hero-cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+}
+
+/* macOS Window Showcase */
+.showcase-wrapper {
+    max-width: 1040px;
+    margin: 0 auto 80px;
+    padding: 0 12px;
+}
+
+.macos-showcase-window {
+    background: var(--macos-window-bg);
+    border-radius: var(--radius-window);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.showcase-titlebar {
+    height: 42px;
+    background: rgba(30, 30, 34, 0.95);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    position: relative;
+}
+
+.showcase-window-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.showcase-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 460px;
+    background: #141416;
+}
+
+@media (max-width: 768px) {
+    .showcase-content {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .showcase-sidebar {
+        display: none;
+    }
+}
+
+.showcase-sidebar {
+    background: rgba(22, 22, 26, 0.9);
+    border-right: 1px solid var(--border-subtle);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.showcase-search {
+    background: rgba(36, 36, 42, 0.8);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-control);
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.showcase-chat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-control);
+    cursor: default;
+}
+
+.showcase-chat-item.active {
+    background: var(--macos-blue);
+    color: #ffffff;
+}
+
+.showcase-chat-item:not(.active) {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.showcase-chat-item:not(.active):hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.showcase-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.showcase-item-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.showcase-item-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: block;
+}
+
+.showcase-item-preview {
+    font-size: 0.78rem;
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.showcase-chat-main {
+    display: flex;
+    flex-direction: column;
+    background: #0d0d0f;
+}
+
+.showcase-chat-header {
+    height: 52px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(20, 20, 24, 0.7);
+}
+
+.showcase-messages {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+}
+
+.showcase-msg {
+    max-width: 68%;
+    padding: 10px 16px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.showcase-msg.sent {
+    align-self: flex-end;
+    background: var(--macos-blue);
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+}
+
+.showcase-msg.received {
+    align-self: flex-start;
+    background: rgba(44, 44, 48, 0.85);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+}
+
+.showcase-composer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(20, 20, 24, 0.9);
+}
+
+.showcase-input-pill {
+    flex: 1;
+    height: 38px;
+    background: rgba(30, 30, 36, 0.9);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+}
+
+.showcase-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--macos-blue);
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+/* Features Grid */
+.features-section {
+    padding: 64px 0 96px;
+    border-top: 1px solid var(--border-separator);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.section-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--macos-cyan);
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: var(--macos-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: 28px;
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(10, 132, 255, 0.12);
+    border: 1px solid rgba(10, 132, 255, 0.25);
+    color: var(--macos-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.feature-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.4rem;
+    }
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+    .landing-hero {
+        padding: 48px 0 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.95rem;
+    }
+    .hero-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+    }
+    .hero-cta-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    .hero-cta-group .btn {
+        width: 100%;
+    }
+    .landing-nav .nav-links {
+        display: none;
+    }
+    .showcase-titlebar .showcase-window-title {
+        display: none;
+    }
+}
