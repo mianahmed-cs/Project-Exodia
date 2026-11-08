@@ -1,5 +1,6 @@
 /**
- * Project Exodia — macOS Authentication & Dashboard Styles
+ * Project Exodia — Liquid Glass Authentication & Dashboard Styles
+ * macOS Sequoia & VisionOS Aesthetic
  */
 
 /* Container and Layout */
@@ -26,9 +27,9 @@
 }
 
 .auth-title {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--text-primary);
     margin-bottom: 6px;
 }
@@ -38,15 +39,18 @@
     color: var(--text-secondary);
 }
 
-/* macOS Window Card */
+/* Liquid Glass Window Card */
 .auth-card {
-    background: var(--macos-window-bg);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1px solid var(--border-subtle);
+    background: rgba(24, 27, 40, 0.65);
+    backdrop-filter: blur(36px) saturate(210%);
+    -webkit-backdrop-filter: blur(36px) saturate(210%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-window);
     padding: 28px 32px 32px;
-    box-shadow: var(--shadow-window);
+    box-shadow: 
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.32),
+        0 28px 70px rgba(0, 0, 0, 0.65),
+        0 2px 6px rgba(0, 0, 0, 0.4);
     position: relative;
 }
 
@@ -54,15 +58,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-separator);
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .auth-window-label {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     color: var(--text-muted);
     text-transform: uppercase;
 }
@@ -87,7 +91,7 @@
 }
 
 .form-label {
-    font-size: 0.84rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-secondary);
 }
@@ -101,22 +105,25 @@
 
 .form-input {
     width: 100%;
-    height: 40px;
-    padding: 0 14px;
-    background: var(--macos-input-bg);
-    border: 1px solid var(--border-subtle);
+    height: 42px;
+    padding: 0 16px;
+    background: rgba(10, 12, 20, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--radius-control);
     color: var(--text-primary);
     font-size: 0.92rem;
     font-family: inherit;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08);
     transition: var(--transition-fast);
 }
 
 .form-input:focus {
     outline: none;
     border-color: var(--macos-blue);
-    background: var(--macos-input-focus-bg);
-    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+    background: rgba(14, 18, 30, 0.88);
+    box-shadow: 
+        0 0 0 3px rgba(10, 132, 255, 0.35),
+        inset 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .form-input::placeholder {
@@ -125,16 +132,16 @@
 
 /* Password Visibility Toggle */
 .with-toggle .form-input {
-    padding-right: 42px;
+    padding-right: 44px;
 }
 
 .pwd-toggle-btn {
     position: absolute;
-    right: 6px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -149,7 +156,7 @@
 
 .pwd-toggle-btn:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .pwd-toggle-btn:focus-visible {
@@ -170,23 +177,23 @@
 }
 
 .has-error .form-input {
-    border-color: rgba(255, 69, 58, 0.6);
-    background: rgba(255, 69, 58, 0.05);
+    border-color: rgba(255, 69, 58, 0.65);
+    background: rgba(255, 69, 58, 0.08);
 }
 
 .has-error .form-input:focus {
-    box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.25);
+    box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.3);
 }
 
 /* Form Actions */
 .form-actions {
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
 .form-actions .btn {
     width: 100%;
-    height: 42px;
-    font-size: 0.92rem;
+    height: 44px;
+    font-size: 0.94rem;
 }
 
 .btn-arrow {
@@ -194,21 +201,21 @@
 }
 
 .btn:hover .btn-arrow {
-    transform: translateX(3px);
+    transform: translateX(4px);
 }
 
 /* Footer Navigation */
 .auth-footer {
-    margin-top: 22px;
+    margin-top: 24px;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     color: var(--text-secondary);
 }
 
 .auth-link {
     color: var(--macos-blue);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     transition: var(--transition-fast);
 }
 
@@ -240,11 +247,15 @@
 }
 
 .dashboard-hero {
-    background: linear-gradient(135deg, rgba(26, 26, 32, 0.95) 0%, rgba(18, 18, 22, 0.98) 100%);
-    border: 1px solid var(--border-subtle);
+    background: rgba(26, 28, 42, 0.65);
+    backdrop-filter: blur(36px) saturate(210%);
+    -webkit-backdrop-filter: blur(36px) saturate(210%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: var(--radius-window);
-    box-shadow: var(--shadow-card);
-    padding: 32px;
+    box-shadow: 
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
+        0 24px 60px rgba(0, 0, 0, 0.6);
+    padding: 34px;
 }
 
 .hero-badge {
@@ -257,9 +268,9 @@
 }
 
 .hero-title {
-    font-size: 2.1rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     margin-bottom: 8px;
     color: var(--text-primary);
 }
@@ -285,13 +296,23 @@
 }
 
 .stat-card {
-    background: var(--macos-input-bg);
-    border: 1px solid var(--border-separator);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: var(--radius-card);
     padding: 16px 18px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.18), 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: var(--transition-fast);
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
 }
 
 .stat-label {
@@ -302,7 +323,7 @@
 }
 
 .stat-value {
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -336,13 +357,14 @@
     justify-content: center;
     width: 22px;
     height: 22px;
-    background: var(--macos-green-bg);
-    border: 1px solid rgba(48, 209, 88, 0.3);
+    background: rgba(48, 209, 88, 0.18);
+    border: 1px solid rgba(48, 209, 88, 0.38);
     color: var(--macos-green);
     border-radius: 50%;
     font-size: 0.72rem;
     flex-shrink: 0;
     margin-top: 2px;
+    box-shadow: 0 0 8px rgba(48, 209, 88, 0.25);
 }
 
 .check-content strong {
