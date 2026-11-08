@@ -14,6 +14,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/attachments.php';
 
 /**
  * Find an existing 1-to-1 conversation between two users, or return null.
@@ -124,7 +125,9 @@ function get_user_conversations(PDO $pdo, int $userId): array {
             m.body AS last_message_body,
             COALESCE(m.is_deleted_for_everyone, 0) AS last_message_is_deleted,
             m.created_at AS last_message_time,
-            m.sender_id AS last_message_sender_id
+            m.sender_id AS last_message_sender_id,
+            att.file_type AS last_message_file_type,
+            att.original_filename AS last_message_filename
         FROM conversations c
         JOIN conversation_participants cp1 ON cp1.conversation_id = c.id AND cp1.user_id = :uid
         JOIN conversation_participants cp2 ON cp2.conversation_id = c.id AND cp2.user_id != :uid2
@@ -136,6 +139,7 @@ function get_user_conversations(PDO $pdo, int $userId): array {
             ORDER BY m2.id DESC
             LIMIT 1
         )
+        LEFT JOIN attachments att ON att.message_id = m.id
         ORDER BY COALESCE(m.created_at, c.updated_at) DESC';
 
     $stmt = $pdo->prepare($sql);
@@ -148,6 +152,14 @@ function get_user_conversations(PDO $pdo, int $userId): array {
     while ($row = $stmt->fetch()) {
         if ((int)$row['last_message_is_deleted'] === 1) {
             $preview = 'This message was deleted.';
+        } elseif (!empty($row['last_message_file_type'])) {
+            $caption = trim((string)$row['last_message_body']);
+            if ($row['last_message_file_type'] === 'image') {
+                $preview = $caption !== '' ? "📷 {$caption}" : '📷 Photo';
+            } else {
+                $fn = $row['last_message_filename'] ?? 'Document';
+                $preview = $caption !== '' ? "📄 {$caption}" : "📄 {$fn}";
+            }
         } else {
             $preview = $row['last_message_body'];
             if ($preview !== null && mb_strlen($preview) > 80) {
@@ -369,6 +381,7 @@ function get_messages(PDO $pdo, int $conversationId, int $afterId = 0, int $limi
 
     $messageIds = array_map(fn($r) => (int)$r['id'], $rows);
     $reactionsSummary = get_message_reactions_summary($pdo, $messageIds, $currentUserId);
+    $attachmentsMap = get_attachments_for_messages($pdo, $messageIds);
 
     $messages = [];
     foreach ($rows as $row) {
@@ -387,6 +400,11 @@ function get_messages(PDO $pdo, int $conversationId, int $afterId = 0, int $limi
             ];
         }
 
+        $att = $attachmentsMap[$mid] ?? null;
+        if ($isDeleted) {
+            $att = null;
+        }
+
         $messages[] = [
             'id'                      => $mid,
             'sender_id'               => (int)$row['sender_id'],
@@ -396,6 +414,7 @@ function get_messages(PDO $pdo, int $conversationId, int $afterId = 0, int $limi
             'deleted_at'              => $row['deleted_at'],
             'reply_to'                => $replyTo,
             'reactions'               => $reactionsSummary[$mid] ?? [],
+            'attachment'              => $att,
             'created_at'              => $row['created_at'],
         ];
     }
