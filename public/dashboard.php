@@ -33,9 +33,16 @@ $email = $user['email'] ?? '';
 
     <nav class="dashboard-nav" aria-label="Main Navigation">
         <div class="nav-container">
-            <div class="brand-badge">
-                <span class="badge-dot"></span>
-                <span>PROJECT EXODIA</span>
+            <div class="nav-brand-group">
+                <div class="macos-traffic-lights" aria-hidden="true">
+                    <span class="traffic-dot traffic-red"></span>
+                    <span class="traffic-dot traffic-yellow"></span>
+                    <span class="traffic-dot traffic-green"></span>
+                </div>
+                <div class="brand-badge" style="margin-bottom: 0;">
+                    <span class="badge-dot"></span>
+                    <span>PROJECT EXODIA</span>
+                </div>
             </div>
 
             <div class="nav-links">
@@ -47,7 +54,7 @@ $email = $user['email'] ?? '';
             <div class="nav-user-actions">
                 <span class="nav-status-badge">
                     <span class="status-indicator-live"></span>
-                    <span>Encrypted Session</span>
+                    <span>Active Session</span>
                 </span>
                 <form action="logout.php" method="POST" class="inline-form">
                     <?= csrf_input_field() ?>
@@ -66,7 +73,7 @@ $email = $user['email'] ?? '';
             <section class="dashboard-hero card">
                 <div class="hero-badge">OPERATIVE TERMINAL</div>
                 <h1 class="hero-title">Welcome, <span class="highlight-text"><?= sanitize_output($username) ?></span></h1>
-                <p class="hero-subtitle">Authentication validated successfully. Your session is active and protected under Project Exodia Phase 1 protocols.</p>
+                <p class="hero-subtitle">Authentication validated successfully. Your secure session is active and protected across the Project Exodia communications network.</p>
                 
                 <div class="session-stats-grid">
                     <div class="stat-card">
@@ -78,11 +85,11 @@ $email = $user['email'] ?? '';
                         <span class="stat-value"><?= sanitize_output($email) ?></span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-label">Auth Protocol</span>
-                        <span class="stat-value">Bcrypt / PHP 8.3 PDO</span>
+                        <span class="stat-label">Security Protocol</span>
+                        <span class="stat-value">Bcrypt / Native PDO</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-label">Session Security</span>
+                        <span class="stat-label">Cookie Protection</span>
                         <span class="stat-value text-accent">HttpOnly + SameSite</span>
                     </div>
                 </div>
@@ -100,19 +107,19 @@ $email = $user['email'] ?? '';
 
             <!-- System Overview Card -->
             <section class="card overview-card">
-                <h2 class="card-title">Phase 1 Architecture Status</h2>
+                <h2 class="card-title">Active Platform Security Controls</h2>
                 <div class="system-checklist">
                     <div class="check-item">
                         <span class="check-icon">&#10003;</span>
                         <div class="check-content">
-                            <strong>Secure Registration:</strong>
-                            <p>Data validated client-side and independently on server; stored in MySQL using prepared statements.</p>
+                            <strong>Identity & Discovery:</strong>
+                            <p>Data validated client-side and independently on server; protected contact management and operative directory.</p>
                         </div>
                     </div>
                     <div class="check-item">
                         <span class="check-icon">&#10003;</span>
                         <div class="check-content">
-                            <strong>Password Protection:</strong>
+                            <strong>Cryptographic Protection:</strong>
                             <p>Stored as cryptographically salted hashes using PHP's native <code>password_hash()</code>.</p>
                         </div>
                     </div>
@@ -120,14 +127,14 @@ $email = $user['email'] ?? '';
                         <span class="check-icon">&#10003;</span>
                         <div class="check-content">
                             <strong>Session Fixation & CSRF Defense:</strong>
-                            <p>Session ID regenerated upon successful authentication; tokenized state-changing forms.</p>
+                            <p>Session ID regenerated upon authentication; tokenized state-changing forms.</p>
                         </div>
                     </div>
                     <div class="check-item">
                         <span class="check-icon">&#10003;</span>
                         <div class="check-content">
-                            <strong>Access Guard:</strong>
-                            <p>Unauthorized direct URL requests automatically terminate and redirect to the login gateway.</p>
+                            <strong>Access Guard & IDOR Isolation:</strong>
+                            <p>Strict access gates and participant membership validation across all direct transmission channels.</p>
                         </div>
                     </div>
                 </div>
@@ -136,7 +143,7 @@ $email = $user['email'] ?? '';
     </main>
 
     <footer class="dashboard-footer">
-        <p>&copy; <?= date('Y') ?> Project Exodia. Built for Web Technologies Project Phase 1.</p>
+        <p>&copy; <?= date('Y') ?> Project Exodia. All rights reserved.</p>
     </footer>
 </body>
 </html>

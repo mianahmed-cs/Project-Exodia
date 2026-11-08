@@ -107,6 +107,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </header>
 
         <section class="auth-card" aria-label="Sign In Form">
+            <div class="auth-card-titlebar" aria-hidden="true">
+                <div class="macos-traffic-lights">
+                    <span class="traffic-dot traffic-red"></span>
+                    <span class="traffic-dot traffic-yellow"></span>
+                    <span class="traffic-dot traffic-green"></span>
+                </div>
+                <span class="auth-window-label">Account Verification</span>
+                <span style="width: 52px;"></span>
+            </div>
+
             <!-- Flash & Error Banners -->
             <?php if ($flashSuccess): ?>
                 <div class="alert alert-success" role="status" id="flashSuccess">
