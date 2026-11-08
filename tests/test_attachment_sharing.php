@@ -338,7 +338,122 @@ run_att_test("Deleted document message body is masked in history", $deletedDocMs
 run_att_test("Deleted document attachment metadata is excluded from history", empty($deletedDocMsg['attachment']));
 
 // ---------------------------------------------------------------------
-// TEST GROUP 8: Cleanup & Cascade Deletion
+// TEST GROUP 8: Live Apache HTTP Upload & Download Verification
+// ---------------------------------------------------------------------
+
+// Helper for HTTP requests with cookie jar
+function http_request(string $url, string $method = 'GET', $data = null, string $cookieFile = '', array $headers = []): array {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    if ($cookieFile !== '') {
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+    }
+    if ($method === 'POST') {
+        curl_setopt($ch, CURLOPT_POST, true);
+        if ($data !== null) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+    }
+    if (!empty($headers)) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    }
+    $body = curl_exec($ch);
+    $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $contentType = (string)curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+    curl_close($ch);
+    return ['code' => $httpCode, 'body' => $body, 'content_type' => $contentType];
+}
+
+$httpCookieA = tempnam(sys_get_temp_dir(), 'exo_http_cookie_');
+$createdTempFiles[] = $httpCookieA;
+
+// 1. Fetch login page for initial CSRF token
+$loginGet = http_request('http://localhost/exodia/login.php', 'GET', null, $httpCookieA);
+preg_match('/name="csrf_token"\s+value="([^"]+)"/', (string)$loginGet['body'], $mCsrf);
+$loginCsrf = $mCsrf[1] ?? '';
+
+// 2. Perform authenticated login over Apache
+$loginPost = http_request('http://localhost/exodia/login.php', 'POST', http_build_query([
+    'email'      => "{$userA_name}@test.local",
+    'password'   => 'Pass123!#',
+    'csrf_token' => $loginCsrf,
+]), $httpCookieA);
+run_att_test("User A authenticates via live Apache HTTP login", $loginPost['code'] === 200);
+
+// 3. Obtain session CSRF token from messages.php
+$msgPage = http_request('http://localhost/exodia/messages.php', 'GET', null, $httpCookieA);
+preg_match('/name="csrf-token"\s+content="([^"]+)"/', (string)$msgPage['body'], $mMsgCsrf);
+$sessionCsrf = $mMsgCsrf[1] ?? '';
+run_att_test("Extract active session CSRF token from messages view", !empty($sessionCsrf));
+
+// 4. Create and upload a genuine JPEG image via Apache
+$sampleJpgPath = tempnam(sys_get_temp_dir(), 'sample_') . '.jpg';
+$createdTempFiles[] = $sampleJpgPath;
+$im = imagecreatetruecolor(64, 64);
+$c = imagecolorallocate($im, 255, 100, 50);
+imagefilledrectangle($im, 0, 0, 64, 64, $c);
+imagejpeg($im, $sampleJpgPath, 90);
+imagedestroy($im);
+
+$uploadJpgFields = [
+    'conversation_id' => $convId,
+    'body'            => 'Live Apache JPG transmission',
+    'csrf_token'      => $sessionCsrf,
+    'attachment'      => new CURLFile($sampleJpgPath, 'image/jpeg', 'camera_capture.jpg'),
+];
+$jpgUploadRes = http_request('http://localhost/exodia/api/messages.php', 'POST', $uploadJpgFields, $httpCookieA, [
+    'X-CSRF-Token: ' . $sessionCsrf,
+    'Accept: application/json',
+]);
+$jpgJson = json_decode((string)$jpgUploadRes['body'], true);
+run_att_test("Upload JPG photo through Apache (www-data writes to private storage)", $jpgUploadRes['code'] === 200 && ($jpgJson['success'] ?? false) === true);
+$liveJpgAttId = (int)($jpgJson['attachment_id'] ?? 0);
+
+// 5. Create and upload a genuine PDF document via Apache
+$samplePdfPath = create_dummy_pdf("Project Exodia Apache Verified PDF");
+$uploadPdfFields = [
+    'conversation_id' => $convId,
+    'body'            => 'Live Apache PDF specification',
+    'csrf_token'      => $sessionCsrf,
+    'attachment'      => new CURLFile($samplePdfPath, 'application/pdf', 'dossier.pdf'),
+];
+$pdfUploadRes = http_request('http://localhost/exodia/api/messages.php', 'POST', $uploadPdfFields, $httpCookieA, [
+    'X-CSRF-Token: ' . $sessionCsrf,
+    'Accept: application/json',
+]);
+$pdfJson = json_decode((string)$pdfUploadRes['body'], true);
+run_att_test("Upload PDF document through Apache (www-data writes to private storage)", $pdfUploadRes['code'] === 200 && ($pdfJson['success'] ?? false) === true);
+$livePdfAttId = (int)($pdfJson['attachment_id'] ?? 0);
+
+// 6. Test sending a normal text message over Apache
+$sendTextRes = http_request('http://localhost/exodia/api/messages.php', 'POST', json_encode([
+    'conversation_id' => $convId,
+    'body'            => 'Text messaging remains 100% operational alongside attachments.',
+    'csrf_token'      => $sessionCsrf,
+]), $httpCookieA, [
+    'Content-Type: application/json',
+    'X-CSRF-Token: ' . $sessionCsrf,
+    'Accept: application/json',
+]);
+$textJson = json_decode((string)$sendTextRes['body'], true);
+run_att_test("Standard text messaging over Apache succeeds", $sendTextRes['code'] === 200 && ($textJson['success'] ?? false) === true);
+
+// 7. Download JPG attachment via Apache as authorized User A
+$downloadJpg = http_request("http://localhost/exodia/api/attachment.php?id={$liveJpgAttId}", 'GET', null, $httpCookieA);
+run_att_test("Authorized download of uploaded JPG returns HTTP 200 & image/jpeg", $downloadJpg['code'] === 200 && strpos($downloadJpg['content_type'], 'image/jpeg') !== false && strlen($downloadJpg['body']) > 0);
+
+// 8. Download PDF attachment via Apache as authorized User A
+$downloadPdf = http_request("http://localhost/exodia/api/attachment.php?id={$livePdfAttId}", 'GET', null, $httpCookieA);
+run_att_test("Authorized download of uploaded PDF returns HTTP 200 & application/pdf", $downloadPdf['code'] === 200 && strpos($downloadPdf['content_type'], 'application/pdf') !== false && strlen($downloadPdf['body']) > 0);
+
+// 9. Unauthorized download attempt (no session cookies) returns HTTP 401
+$unauthDownload = http_request("http://localhost/exodia/api/attachment.php?id={$liveJpgAttId}", 'GET', null, '');
+run_att_test("Unauthorized attachment access rejected with HTTP 401", $unauthDownload['code'] === 401);
+
+// ---------------------------------------------------------------------
+// TEST GROUP 9: Cleanup & Cascade Deletion
 // ---------------------------------------------------------------------
 
 // Cleanup physical attachment files created during test
@@ -385,3 +500,4 @@ if ($passCount === $totalCount) {
     echo "✖ ONE OR MORE ATTACHMENT TESTS FAILED.\n\n";
     exit(1);
 }
+

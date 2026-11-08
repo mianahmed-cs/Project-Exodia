@@ -30,3 +30,4 @@ CREATE TABLE IF NOT EXISTS `attachments` (
   INDEX `idx_att_conversation` (`conversation_id`),
   INDEX `idx_att_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
