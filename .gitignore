@@ -1,0 +1,22 @@
+# Project Exodia - Git Ignore Rules
+# Security & Credentials
+config/config.php
+*.env
+.env
+.env.*
+!*.example.php
+!*.env.example
+
+# Logs and runtime data
+*.log
+logs/
+tmp/
+temp/
+
+# Operating System & IDE Artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
