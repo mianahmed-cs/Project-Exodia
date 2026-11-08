@@ -19,7 +19,7 @@ $username = $currentUser['username'] ?? '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Project Exodia — A modern, elegant macOS-inspired web direct messaging platform.">
+    <meta name="description" content="Project Exodia — A modern, elegant web direct messaging platform with secure photo and document sharing, persistent chat history, and refined glass aesthetics.">
     <title>Project Exodia — Conversations, Beautifully Connected</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/landing.css">
@@ -74,7 +74,7 @@ $username = $currentUser['username'] ?? '';
         <section class="landing-hero landing-container">
             <div class="hero-pill">
                 <span>✦</span>
-                <span>macOS-INSPIRED MESSAGING PLATFORM</span>
+                <span>DIRECT MESSAGING PLATFORM</span>
             </div>
 
             <h1 class="hero-title">
@@ -164,13 +164,13 @@ $username = $currentUser['username'] ?? '';
 
                         <div class="showcase-messages">
                             <div class="showcase-msg received">
-                                <span>Operative Alpha, direct transmission confirmed. Have you inspected the new macOS interface?</span>
+                                <span>Operative Alpha, direct transmission confirmed. Have you inspected the new interface?</span>
                             </div>
                             <div class="showcase-msg sent">
                                 <span>Interface overhaul complete. Frosted glass panels, consistent spacing, and real-time polling are fully active.</span>
                             </div>
                             <div class="showcase-msg received">
-                                <span>Outstanding. Clean typography and responsive controls make this look like a native Mac desktop app.</span>
+                                <span>Outstanding. Clean typography, responsive controls, and fluid messaging make this look incredible.</span>
                             </div>
                         </div>
 
@@ -206,6 +206,24 @@ $username = $currentUser['username'] ?? '';
 
                 <!-- Feature 2 -->
                 <article class="feature-card">
+                    <div class="feature-icon-wrapper" aria-hidden="true">📷</div>
+                    <h3 class="feature-title">Photo & Document Sharing</h3>
+                    <p class="feature-desc">
+                        Send photos with instant full-size lightbox previews and share confidential documents safely through verified private storage.
+                    </p>
+                </article>
+
+                <!-- Feature 3 -->
+                <article class="feature-card">
+                    <div class="feature-icon-wrapper" aria-hidden="true">❤️</div>
+                    <h3 class="feature-title">Replies, Reactions & Deletion</h3>
+                    <p class="feature-desc">
+                        Quote-reply to messages, express yourself with real-time emoji reactions, and delete messages for yourself or everyone.
+                    </p>
+                </article>
+
+                <!-- Feature 4 -->
+                <article class="feature-card">
                     <div class="feature-icon-wrapper" aria-hidden="true">🔍</div>
                     <h3 class="feature-title">User Discovery</h3>
                     <p class="feature-desc">
@@ -213,7 +231,7 @@ $username = $currentUser['username'] ?? '';
                     </p>
                 </article>
 
-                <!-- Feature 3 -->
+                <!-- Feature 5 -->
                 <article class="feature-card">
                     <div class="feature-icon-wrapper" aria-hidden="true">⚡</div>
                     <h3 class="feature-title">Continuous History</h3>
@@ -222,7 +240,7 @@ $username = $currentUser['username'] ?? '';
                     </p>
                 </article>
 
-                <!-- Feature 4 -->
+                <!-- Feature 6 -->
                 <article class="feature-card">
                     <div class="feature-icon-wrapper" aria-hidden="true">📱</div>
                     <h3 class="feature-title">Responsive Multi-Device</h3>
@@ -234,9 +252,9 @@ $username = $currentUser['username'] ?? '';
         </section>
     </main>
 
-    <!-- Minimal macOS Footer -->
+    <!-- Footer -->
     <footer class="dashboard-footer">
-        <div class="landing-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 16px;">
+        <div class="landing-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <span>&copy; <?= date('Y') ?> Project Exodia. All rights reserved.</span>
             <div style="display: flex; gap: 16px;">
                 <a href="login.php" style="color: var(--text-muted); text-decoration: none;">Sign In</a>
