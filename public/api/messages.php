@@ -2,8 +2,12 @@
 /**
  * Project Exodia — Messages API Endpoint
  *
- * GET:  Retrieve messages for a conversation (requires conversation_id, optional after_id for polling)
- * POST: Send a message (requires conversation_id, body, CSRF token)
+ * GET:  Retrieve messages & activity events (requires conversation_id, optional after_id & after_event_id)
+ * POST: Actions supported:
+ *        - 'send': Send direct message (supports optional reply_to_message_id)
+ *        - 'delete_for_me': Hide message for current user
+ *        - 'delete_for_everyone': Mask message for all participants (original sender only)
+ *        - 'react': Toggle emoji reaction (👍, ❤️, 😂, 😮, 😢, 😡)
  */
 
 declare(strict_types=1);
