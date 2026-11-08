@@ -130,7 +130,7 @@ function get_user_conversations(PDO $pdo, int $userId): array {
         LEFT JOIN messages m ON m.id = (
             SELECT m2.id FROM messages m2
             WHERE m2.conversation_id = c.id
-            ORDER BY m2.created_at DESC
+            ORDER BY m2.id DESC
             LIMIT 1
         )
         ORDER BY COALESCE(m.created_at, c.updated_at) DESC';
@@ -213,7 +213,7 @@ function get_messages(PDO $pdo, int $conversationId, int $afterId = 0, int $limi
             FROM messages m
             JOIN users u ON u.id = m.sender_id
             WHERE m.conversation_id = :cid AND m.id > :after_id
-            ORDER BY m.created_at ASC
+            ORDER BY m.id ASC
             LIMIT ' . (int)$limit;
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':cid', $conversationId, PDO::PARAM_INT);
@@ -224,7 +224,7 @@ function get_messages(PDO $pdo, int $conversationId, int $afterId = 0, int $limi
             FROM messages m
             JOIN users u ON u.id = m.sender_id
             WHERE m.conversation_id = :cid
-            ORDER BY m.created_at ASC
+            ORDER BY m.id ASC
             LIMIT ' . (int)$limit;
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':cid', $conversationId, PDO::PARAM_INT);
