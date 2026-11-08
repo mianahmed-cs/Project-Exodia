@@ -34,10 +34,10 @@ $csrfToken = generate_csrf_token();
     <meta name="csrf-token" content="<?= sanitize_output($csrfToken) ?>">
     <meta name="user-id" content="<?= $userId ?>">
     <title>Messages | Project Exodia</title>
-    <link rel="stylesheet" href="css/style.css?v=2.2">
-    <link rel="stylesheet" href="css/auth.css?v=2.2">
-    <link rel="stylesheet" href="css/contacts.css?v=2.2">
-    <link rel="stylesheet" href="css/messaging.css?v=2.2">
+    <link rel="stylesheet" href="css/style.css?v=2.3">
+    <link rel="stylesheet" href="css/auth.css?v=2.3">
+    <link rel="stylesheet" href="css/contacts.css?v=2.3">
+    <link rel="stylesheet" href="css/messaging.css?v=2.3">
 </head>
 <body class="dashboard-body" style="overflow: hidden;">
     <div class="auth-bg-glow" aria-hidden="true"></div>
@@ -175,7 +175,34 @@ $csrfToken = generate_csrf_token();
                         </svg>
                     </button>
                 </div>
+
+                <!-- Attachment Staging Preview Bar -->
+                <div id="composerAttachmentBar" class="composer-attachment-bar" style="display: none;">
+                    <div class="attachment-preview-icon" id="attachmentPreviewIcon">📎</div>
+                    <div class="attachment-preview-details">
+                        <span class="attachment-preview-name" id="attachmentPreviewName">attachment.png</span>
+                        <span class="attachment-preview-size" id="attachmentPreviewSize">1.2 MB</span>
+                        <div id="attachmentProgressBar" class="attachment-progress-wrap" style="display: none;">
+                            <div id="attachmentProgressFill" class="attachment-progress-fill"></div>
+                        </div>
+                    </div>
+                    <button type="button" id="removeAttachmentBtn" class="attachment-preview-remove" aria-label="Remove attachment">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
                 <div class="composer-pill">
+                    <!-- Attachment Paperclip Button -->
+                    <button type="button" id="attachBtn" class="composer-attach" aria-label="Attach photo or document" title="Attach file or photo">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                    </button>
+                    <input type="file" id="attachmentInput" accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" style="display: none;" />
+
                     <textarea
                         id="messageInput"
                         class="composer-input"
@@ -194,7 +221,30 @@ $csrfToken = generate_csrf_token();
         </main>
     </div>
 
+    <!-- Full-Size Image Viewer Modal (Lightbox) -->
+    <div id="imageViewerModal" class="image-viewer-modal" style="display: none;" role="dialog" aria-modal="true" aria-label="Full size image preview">
+        <div class="image-viewer-backdrop" id="imageViewerBackdrop"></div>
+        <div class="image-viewer-header">
+            <div class="image-viewer-info">
+                <span id="imageViewerTitle" class="image-viewer-title">Photo Preview</span>
+                <span id="imageViewerMeta" class="image-viewer-meta"></span>
+            </div>
+            <div class="image-viewer-actions">
+                <a id="imageViewerDownload" href="#" download class="image-viewer-download-btn" title="Download Image">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download</span>
+                </a>
+                <button type="button" id="imageViewerClose" class="image-viewer-close-btn" aria-label="Close image viewer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="image-viewer-body">
+            <img id="imageViewerImg" src="" alt="Full size preview" class="image-viewer-img" />
+        </div>
+    </div>
+
     <!-- Client-side Logic -->
-    <script src="js/messaging.js?v=2.2"></script>
+    <script src="js/messaging.js?v=2.3"></script>
 </body>
 </html>
