@@ -46,6 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const replyBarText = document.getElementById('replyBarText');
     const cancelReplyBtn = document.getElementById('cancelReplyBtn');
 
+    // Attachment Staging & Viewer Elements
+    const attachBtn = document.getElementById('attachBtn');
+    const attachmentInput = document.getElementById('attachmentInput');
+    const composerAttachmentBar = document.getElementById('composerAttachmentBar');
+    const attachmentPreviewIcon = document.getElementById('attachmentPreviewIcon');
+    const attachmentPreviewName = document.getElementById('attachmentPreviewName');
+    const attachmentPreviewSize = document.getElementById('attachmentPreviewSize');
+    const attachmentProgressBar = document.getElementById('attachmentProgressBar');
+    const attachmentProgressFill = document.getElementById('attachmentProgressFill');
+    const removeAttachmentBtn = document.getElementById('removeAttachmentBtn');
+
+    // Lightbox Image Viewer Elements
+    const imageViewerModal = document.getElementById('imageViewerModal');
+    const imageViewerBackdrop = document.getElementById('imageViewerBackdrop');
+    const imageViewerTitle = document.getElementById('imageViewerTitle');
+    const imageViewerMeta = document.getElementById('imageViewerMeta');
+    const imageViewerDownload = document.getElementById('imageViewerDownload');
+    const imageViewerClose = document.getElementById('imageViewerClose');
+    const imageViewerImg = document.getElementById('imageViewerImg');
+
     let activeConversationId = null;
     let activeOtherUsername = '';
     let lastMessageId = 0;
@@ -57,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeTab = 'chats'; // 'chats' or 'contacts'
     let activeReplyTo = null; // { id, sender_username, body }
     let activeMenuEl = null;
+    let stagedAttachmentFile = null;
 
     const ALLOWED_EMOJIS = ['👍', '❤️', '😂', '😮', '😢', '😡'];
 
@@ -90,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (composerReplyBar) {
             composerReplyBar.style.display = 'flex';
             if (replyBarTitle) replyBarTitle.textContent = `Replying to ${senderUsername}`;
-            if (replyBarText) replyBarText.textContent = body || 'Message';
+            if (replyBarText) replyBarText.textContent = body || 'Attachment message';
         }
         if (messageInput) messageInput.focus();
     }
@@ -103,6 +124,116 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cancelReplyBtn) {
         cancelReplyBtn.addEventListener('click', clearReply);
     }
+
+    // ----------------------------------------------------
+    // Attachment Staging & Lightbox Helpers
+    // ----------------------------------------------------
+    function formatFileSize(bytes) {
+        if (!bytes || bytes <= 0) return '0 B';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function getDocIconColor(filename) {
+        const ext = (filename || '').split('.').pop().toLowerCase();
+        if (ext === 'pdf') return '#ff453a';
+        if (['doc', 'docx'].includes(ext)) return '#0a84ff';
+        if (['xls', 'xlsx'].includes(ext)) return '#30d158';
+        if (['ppt', 'pptx'].includes(ext)) return '#ff9f0a';
+        return '#8e8e93';
+    }
+
+    if (attachBtn && attachmentInput) {
+        attachBtn.addEventListener('click', () => {
+            attachmentInput.click();
+        });
+
+        attachmentInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const isImage = file.type.startsWith('image/');
+            const maxSize = isImage ? 10 * 1024 * 1024 : 25 * 1024 * 1024;
+            const limitLabel = isImage ? '10 MB' : '25 MB';
+
+            if (file.size > maxSize) {
+                alert(`File "${file.name}" exceeds the ${limitLabel} size limit.`);
+                attachmentInput.value = '';
+                return;
+            }
+
+            stagedAttachmentFile = file;
+
+            if (composerAttachmentBar) {
+                composerAttachmentBar.style.display = 'flex';
+                if (attachmentPreviewName) attachmentPreviewName.textContent = file.name;
+                if (attachmentPreviewSize) attachmentPreviewSize.textContent = formatFileSize(file.size);
+
+                if (attachmentPreviewIcon) {
+                    if (isImage) {
+                        const blobUrl = URL.createObjectURL(file);
+                        attachmentPreviewIcon.innerHTML = `<img src="${blobUrl}" alt="Preview" />`;
+                    } else {
+                        const iconColor = getDocIconColor(file.name);
+                        attachmentPreviewIcon.innerHTML = `
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        `;
+                    }
+                }
+            }
+
+            if (messageInput) {
+                messageInput.placeholder = 'Add a caption (optional)...';
+                messageInput.focus();
+            }
+        });
+    }
+
+    function removeAttachment() {
+        stagedAttachmentFile = null;
+        if (attachmentInput) attachmentInput.value = '';
+        if (composerAttachmentBar) composerAttachmentBar.style.display = 'none';
+        if (attachmentProgressBar) attachmentProgressBar.style.display = 'none';
+        if (attachmentProgressFill) attachmentProgressFill.style.width = '0%';
+        if (messageInput) {
+            messageInput.placeholder = 'iMessage';
+        }
+    }
+
+    if (removeAttachmentBtn) {
+        removeAttachmentBtn.addEventListener('click', removeAttachment);
+    }
+
+    // Lightbox image viewer
+    function openImageViewer(previewUrl, downloadUrl, filename, size) {
+        if (!imageViewerModal) return;
+        if (imageViewerImg) imageViewerImg.src = previewUrl;
+        if (imageViewerDownload) {
+            imageViewerDownload.href = downloadUrl;
+            imageViewerDownload.setAttribute('download', filename || 'photo');
+        }
+        if (imageViewerTitle) imageViewerTitle.textContent = filename || 'Photo Preview';
+        if (imageViewerMeta) imageViewerMeta.textContent = formatFileSize(size);
+        imageViewerModal.style.display = 'flex';
+    }
+
+    function closeImageViewer() {
+        if (!imageViewerModal) return;
+        imageViewerModal.style.display = 'none';
+        if (imageViewerImg) imageViewerImg.src = '';
+    }
+
+    if (imageViewerClose) imageViewerClose.addEventListener('click', closeImageViewer);
+    if (imageViewerBackdrop) imageViewerBackdrop.addEventListener('click', closeImageViewer);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && imageViewerModal && imageViewerModal.style.display !== 'none') {
+            closeImageViewer();
+        }
+    });
 
     // ----------------------------------------------------
     // Utility Functions
@@ -322,6 +453,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pollInterval) clearInterval(pollInterval);
         closeActiveMenu();
         clearReply();
+        removeAttachment();
+        closeImageViewer();
 
         activeConversationId = convId;
         activeOtherUsername = otherUsername;
@@ -498,10 +631,62 @@ document.addEventListener('DOMContentLoaded', () => {
                 bubble.appendChild(quote);
             }
 
-            const textSpan = document.createElement('span');
-            textSpan.className = 'msg-text';
-            textSpan.innerHTML = isDeleted ? 'This message was deleted.' : escapeHTML(m.body);
-            bubble.appendChild(textSpan);
+            // Attachment Preview (Photo Lightbox Thumbnail or Document Card)
+            if (m.attachment && !isDeleted) {
+                const att = m.attachment;
+                const fileName = att.original_filename || att.original_name || 'attachment';
+                if (att.file_type === 'image') {
+                    const imgWrap = document.createElement('div');
+                    imgWrap.className = 'msg-attachment-image-wrap';
+                    imgWrap.innerHTML = `
+                        <img src="${escapeHTML(att.preview_url)}" 
+                             alt="${escapeHTML(fileName)}" 
+                             class="msg-attachment-img" 
+                             loading="lazy" />
+                    `;
+                    imgWrap.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openImageViewer(att.preview_url, att.download_url, fileName, att.file_size);
+                    });
+                    bubble.appendChild(imgWrap);
+                } else {
+                    const docCard = document.createElement('a');
+                    docCard.className = 'msg-attachment-doc-card';
+                    docCard.href = att.download_url;
+                    docCard.setAttribute('download', fileName);
+                    const iconColor = getDocIconColor(fileName);
+                    docCard.innerHTML = `
+                        <div class="doc-icon-wrap">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="doc-details">
+                            <span class="doc-name" title="${escapeHTML(fileName)}">${escapeHTML(fileName)}</span>
+                            <span class="doc-size">${formatFileSize(att.file_size)}</span>
+                        </div>
+                        <div class="doc-download-icon" title="Download">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </div>
+                    `;
+                    bubble.appendChild(docCard);
+                }
+            }
+
+            // Text / Caption Body
+            if (isDeleted) {
+                const textSpan = document.createElement('span');
+                textSpan.className = 'msg-text';
+                textSpan.innerHTML = 'This message was deleted.';
+                bubble.appendChild(textSpan);
+            } else if (m.body && m.body.trim() !== '') {
+                const textSpan = document.createElement('span');
+                textSpan.className = 'msg-text';
+                textSpan.innerHTML = escapeHTML(m.body);
+                bubble.appendChild(textSpan);
+            }
             row.appendChild(bubble);
 
             // Action Trigger Button (Only if not deleted for everyone)
@@ -855,37 +1040,88 @@ document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
     async function handleSendMessage() {
         if (!activeConversationId) return;
-        const text = messageInput.value.trim();
-        if (!text) return;
+        const text = messageInput ? messageInput.value.trim() : '';
+        if (!text && !stagedAttachmentFile) return;
 
-        messageInput.disabled = true;
-        sendBtn.disabled = true;
+        if (messageInput) messageInput.disabled = true;
+        if (sendBtn) sendBtn.disabled = true;
+        if (attachBtn) attachBtn.disabled = true;
 
         const replyToId = activeReplyTo ? activeReplyTo.id : null;
 
         try {
-            const res = await fetch('api/messages.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-Token': csrfToken,
-                },
-                body: JSON.stringify({
-                    conversation_id: activeConversationId,
-                    body: text,
-                    reply_to_message_id: replyToId,
-                    csrf_token: csrfToken,
-                }),
-            });
-            const data = await res.json();
-            if (!res.ok || !data.success) {
-                alert(data.error || 'Failed to send message.');
-                return;
-            }
+            if (stagedAttachmentFile) {
+                // Upload attachment with optional caption and reply
+                const formData = new FormData();
+                formData.append('conversation_id', activeConversationId);
+                formData.append('body', text);
+                formData.append('attachment', stagedAttachmentFile);
+                formData.append('csrf_token', csrfToken);
+                if (replyToId) {
+                    formData.append('reply_to_message_id', replyToId);
+                }
 
-            messageInput.value = '';
-            clearReply();
+                if (attachmentProgressBar) attachmentProgressBar.style.display = 'block';
+                if (attachmentProgressFill) attachmentProgressFill.style.width = '15%';
+
+                await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'api/messages.php');
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+
+                    xhr.upload.onprogress = (e) => {
+                        if (e.lengthComputable && attachmentProgressFill) {
+                            const pct = Math.round((e.loaded / e.total) * 90);
+                            attachmentProgressFill.style.width = `${Math.max(15, pct)}%`;
+                        }
+                    };
+
+                    xhr.onload = () => {
+                        try {
+                            const resp = JSON.parse(xhr.responseText);
+                            if (xhr.status >= 200 && xhr.status < 300 && resp.success) {
+                                if (attachmentProgressFill) attachmentProgressFill.style.width = '100%';
+                                resolve(resp);
+                            } else {
+                                reject(new Error(resp.error || 'Upload failed with status ' + xhr.status));
+                            }
+                        } catch (e) {
+                            reject(new Error('Invalid response from server: ' + xhr.responseText));
+                        }
+                    };
+
+                    xhr.onerror = () => reject(new Error('Network error during upload'));
+                    xhr.send(formData);
+                });
+
+                if (messageInput) messageInput.value = '';
+                removeAttachment();
+                clearReply();
+            } else {
+                const res = await fetch('api/messages.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-Token': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        conversation_id: activeConversationId,
+                        body: text,
+                        reply_to_message_id: replyToId,
+                        csrf_token: csrfToken,
+                    }),
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    alert(data.error || 'Failed to send message.');
+                    return;
+                }
+
+                if (messageInput) messageInput.value = '';
+                clearReply();
+            }
 
             // Immediately fetch new message
             await pollNewMessages();
@@ -894,9 +1130,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             alert('Failed to send transmission: ' + err.message);
         } finally {
-            messageInput.disabled = false;
-            sendBtn.disabled = false;
-            messageInput.focus();
+            if (messageInput) {
+                messageInput.disabled = false;
+                messageInput.focus();
+            }
+            if (sendBtn) sendBtn.disabled = false;
+            if (attachBtn) attachBtn.disabled = false;
         }
     }
 
