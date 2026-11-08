@@ -207,7 +207,7 @@ $csrfToken = generate_csrf_token();
                         id="messageInput"
                         class="composer-input"
                         rows="1"
-                        placeholder="iMessage"
+                        placeholder="Type a message..."
                         aria-label="Message content"
                         maxlength="5000"
                     ></textarea>

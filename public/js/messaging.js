@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (attachmentProgressBar) attachmentProgressBar.style.display = 'none';
         if (attachmentProgressFill) attachmentProgressFill.style.width = '0%';
         if (messageInput) {
-            messageInput.placeholder = 'iMessage';
+            messageInput.placeholder = 'Type a message...';
         }
     }
 
