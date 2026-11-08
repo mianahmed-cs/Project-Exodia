@@ -63,6 +63,20 @@ try {
                 ];
             }
 
+            $attSafe = null;
+            if (!empty($m['attachment']) && !$isDeleted) {
+                $a = $m['attachment'];
+                $attSafe = [
+                    'id'                => (int)$a['id'],
+                    'original_filename' => htmlspecialchars($a['original_filename'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                    'file_size'         => (int)$a['file_size'],
+                    'file_type'         => $a['file_type'],
+                    'mime_type'         => $a['mime_type'],
+                    'download_url'      => $a['download_url'],
+                    'preview_url'       => $a['preview_url'],
+                ];
+            }
+
             return [
                 'id'                      => $m['id'],
                 'sender_id'               => $m['sender_id'],
@@ -72,6 +86,7 @@ try {
                 'deleted_at'              => $m['deleted_at'] ?? null,
                 'reply_to'                => $replyToSafe,
                 'reactions'               => $m['reactions'] ?? [],
+                'attachment'              => $attSafe,
                 'created_at'              => $m['created_at'],
             ];
         }, $messages);
@@ -150,7 +165,37 @@ try {
             exit;
         }
 
-        // Action 4: Standard Message Send (with optional Quoted Reply)
+        // Action 4: File & Photo Upload Message
+        if (isset($_FILES['attachment']) || isset($_FILES['file']) || $action === 'upload_attachment') {
+            $file = $_FILES['attachment'] ?? $_FILES['file'] ?? null;
+            if (!$file) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'No attachment file provided.']);
+                exit;
+            }
+
+            $conversationId = (int)($data['conversation_id'] ?? 0);
+            $caption = (string)($data['body'] ?? $data['caption'] ?? '');
+            $replyToId = isset($data['reply_to_message_id']) && (int)$data['reply_to_message_id'] > 0
+                ? (int)$data['reply_to_message_id']
+                : null;
+
+            if ($conversationId <= 0) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'conversation_id is required.']);
+                exit;
+            }
+
+            $result = save_attachment_message($pdo, $conversationId, $currentUserId, $file, $caption, $replyToId);
+            if (!$result['success']) {
+                $code = ($result['code'] ?? '') === 'UNAUTHORIZED' ? 403 : 400;
+                http_response_code($code);
+            }
+            echo json_encode($result, JSON_UNESCAPED_SLASHES);
+            exit;
+        }
+
+        // Action 5: Standard Message Send (with optional Quoted Reply)
         $conversationId = (int)($data['conversation_id'] ?? 0);
         $body = (string)($data['body'] ?? '');
         $replyToId = isset($data['reply_to_message_id']) && (int)$data['reply_to_message_id'] > 0

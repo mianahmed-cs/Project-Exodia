@@ -978,3 +978,343 @@
     background: rgba(255, 255, 255, 0.12);
 }
 
+/* ========================================================
+   Photo & File Sharing: Composer Staging & Message Cards
+   ======================================================== */
+
+/* Paperclip Button in Composer */
+.composer-attach {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+    padding: 0;
+}
+
+.composer-attach:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.composer-attach:active {
+    transform: scale(0.94);
+}
+
+/* Composer Attachment Staging Bar */
+.composer-attachment-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: rgba(18, 20, 32, 0.94);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: none;
+    border-radius: 18px 18px 0 0;
+    padding: 9px 14px 7px;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 6;
+    box-sizing: border-box;
+    animation: menuFadeIn 0.14s ease-out;
+}
+
+.attachment-preview-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.15rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.attachment-preview-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.attachment-preview-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    margin: 0 12px;
+}
+
+.attachment-preview-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+}
+
+.attachment-preview-size {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+.attachment-progress-wrap {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.attachment-progress-fill {
+    height: 100%;
+    background: var(--macos-blue);
+    width: 0%;
+    transition: width 0.15s ease;
+}
+
+.attachment-preview-remove {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.12s ease, background 0.12s ease;
+    flex-shrink: 0;
+}
+
+.attachment-preview-remove:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* Chat Image Bubbles */
+.msg-attachment-image-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    max-width: 320px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.msg-attachment-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 280px;
+    object-fit: cover;
+    transition: transform 0.22s ease;
+}
+
+.msg-attachment-image-wrap:hover .msg-attachment-img {
+    transform: scale(1.025);
+}
+
+/* Chat Document Cards */
+.msg-attachment-doc-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    text-decoration: none;
+    color: #ffffff;
+    margin-bottom: 5px;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+    max-width: 320px;
+    box-sizing: border-box;
+}
+
+.msg-attachment-doc-card:hover {
+    background: rgba(0, 0, 0, 0.48);
+    border-color: rgba(255, 255, 255, 0.28);
+    transform: translateY(-1px);
+}
+
+.doc-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.doc-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.doc-name {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25;
+}
+
+.doc-size {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+.doc-download-icon {
+    color: var(--macos-blue);
+    flex-shrink: 0;
+    opacity: 0.9;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.msg-attachment-doc-card:hover .doc-download-icon {
+    transform: translateY(1px);
+    opacity: 1;
+}
+
+/* Full-Size Image Viewer Modal (Lightbox) */
+.image-viewer-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.image-viewer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 10, 18, 0.94);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+}
+
+.image-viewer-header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(18, 20, 32, 0.72);
+}
+
+.image-viewer-info {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+}
+
+.image-viewer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.image-viewer-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.image-viewer-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.image-viewer-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.image-viewer-download-btn:hover {
+    background: var(--macos-blue);
+    border-color: var(--macos-blue);
+}
+
+.image-viewer-close-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.image-viewer-close-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.image-viewer-body {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+}
+
+.image-viewer-img {
+    max-width: 90vw;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 16px 54px rgba(0, 0, 0, 0.75);
+    animation: menuFadeIn 0.18s ease-out;
+}
+
+

@@ -30,6 +30,7 @@ $suites = [
     'Phase 4 — Master User Journey'       => __DIR__ . '/test_full_journey.php',
     'Cloudflare Tunnel & Remote Messaging' => __DIR__ . '/test_remote_messaging.php',
     'Advanced Messaging (Delete, Reply, React)' => __DIR__ . '/test_advanced_messaging.php',
+    'Photo & File Sharing (Images, Documents, Lightbox)' => __DIR__ . '/test_attachment_sharing.php',
 ];
 
 $allPassed = true;
