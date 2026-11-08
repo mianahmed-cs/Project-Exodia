@@ -19,14 +19,7 @@ require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/attachments.php';
 
 // Authenticate user
-if (!is_logged_in()) {
-    http_response_code(401);
-    header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode(['success' => false, 'error' => 'Authentication required.']);
-    exit;
-}
-
-$currentUser = get_logged_in_user();
+$currentUser = require_auth_api();
 $currentUserId = (int)$currentUser['id'];
 
 $attachmentId = (int)($_GET['id'] ?? 0);
