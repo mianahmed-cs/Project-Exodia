@@ -27,6 +27,7 @@ try {
     if ($method === 'GET') {
         $conversationId = (int)($_GET['conversation_id'] ?? 0);
         $afterId = (int)($_GET['after_id'] ?? 0);
+        $afterEventId = isset($_GET['after_event_id']) ? (int)$_GET['after_event_id'] : null;
 
         if ($conversationId <= 0) {
             http_response_code(400);
@@ -41,18 +42,57 @@ try {
             exit;
         }
 
-        $messages = get_messages($pdo, $conversationId, $afterId);
+        $messages = get_messages($pdo, $conversationId, $afterId, 100, $currentUserId);
         $safe = array_map(function ($m) {
+            $isDeleted = !empty($m['is_deleted_for_everyone']);
+            
+            $replyToSafe = null;
+            if (!empty($m['reply_to'])) {
+                $r = $m['reply_to'];
+                $rDeleted = !empty($r['is_deleted_for_everyone']);
+                $replyToSafe = [
+                    'id'                      => (int)$r['id'],
+                    'sender_id'               => (int)$r['sender_id'],
+                    'sender_username'         => htmlspecialchars($r['sender_username'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                    'body'                    => $rDeleted ? 'This message was deleted.' : htmlspecialchars($r['body'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                    'is_deleted_for_everyone' => $rDeleted,
+                ];
+            }
+
             return [
-                'id'              => $m['id'],
-                'sender_id'       => $m['sender_id'],
-                'sender_username' => htmlspecialchars($m['sender_username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
-                'body'            => htmlspecialchars($m['body'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
-                'created_at'      => $m['created_at'],
+                'id'                      => $m['id'],
+                'sender_id'               => $m['sender_id'],
+                'sender_username'         => htmlspecialchars($m['sender_username'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                'body'                    => $isDeleted ? 'This message was deleted.' : htmlspecialchars($m['body'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                'is_deleted_for_everyone' => $isDeleted,
+                'deleted_at'              => $m['deleted_at'] ?? null,
+                'reply_to'                => $replyToSafe,
+                'reactions'               => $m['reactions'] ?? [],
+                'created_at'              => $m['created_at'],
             ];
         }, $messages);
 
-        echo json_encode(['success' => true, 'messages' => $safe], JSON_UNESCAPED_SLASHES);
+        $response = [
+            'success'  => true,
+            'messages' => $safe,
+        ];
+
+        // If client is tracking events incrementally
+        if ($afterEventId !== null) {
+            $events = get_conversation_events($pdo, $conversationId, $afterEventId, $currentUserId);
+            $response['events'] = $events;
+            $maxEvId = $afterEventId;
+            foreach ($events as $ev) {
+                if ($ev['id'] > $maxEvId) {
+                    $maxEvId = $ev['id'];
+                }
+            }
+            $response['last_event_id'] = $maxEvId;
+        } else {
+            $response['last_event_id'] = get_max_event_id($pdo, $conversationId);
+        }
+
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
         exit;
     }
 
@@ -67,8 +107,51 @@ try {
             exit;
         }
 
+        $action = (string)($data['action'] ?? 'send');
+
+        // Action 1: Delete For Me
+        if ($action === 'delete_for_me') {
+            $messageId = (int)($data['message_id'] ?? 0);
+            $result = delete_message_for_me($pdo, $messageId, $currentUserId);
+            if (!$result['success']) {
+                $code = ($result['code'] ?? '') === 'NOT_FOUND' ? 404 : 400;
+                http_response_code($code);
+            }
+            echo json_encode($result, JSON_UNESCAPED_SLASHES);
+            exit;
+        }
+
+        // Action 2: Delete For Everyone
+        if ($action === 'delete_for_everyone') {
+            $messageId = (int)($data['message_id'] ?? 0);
+            $result = delete_message_for_everyone($pdo, $messageId, $currentUserId);
+            if (!$result['success']) {
+                $code = ($result['code'] ?? '') === 'FORBIDDEN' ? 403 : (($result['code'] ?? '') === 'NOT_FOUND' ? 404 : 400);
+                http_response_code($code);
+            }
+            echo json_encode($result, JSON_UNESCAPED_SLASHES);
+            exit;
+        }
+
+        // Action 3: Emoji Reaction Toggle
+        if ($action === 'react') {
+            $messageId = (int)($data['message_id'] ?? 0);
+            $emoji = (string)($data['emoji'] ?? '');
+            $result = toggle_message_reaction($pdo, $messageId, $currentUserId, $emoji);
+            if (!$result['success']) {
+                $code = ($result['code'] ?? '') === 'NOT_FOUND' ? 404 : 400;
+                http_response_code($code);
+            }
+            echo json_encode($result, JSON_UNESCAPED_SLASHES);
+            exit;
+        }
+
+        // Action 4: Standard Message Send (with optional Quoted Reply)
         $conversationId = (int)($data['conversation_id'] ?? 0);
         $body = (string)($data['body'] ?? '');
+        $replyToId = isset($data['reply_to_message_id']) && (int)$data['reply_to_message_id'] > 0
+            ? (int)$data['reply_to_message_id']
+            : null;
 
         if ($conversationId <= 0) {
             http_response_code(400);
@@ -76,7 +159,7 @@ try {
             exit;
         }
 
-        $result = send_message($pdo, $conversationId, $currentUserId, $body);
+        $result = send_message($pdo, $conversationId, $currentUserId, $body, $replyToId);
         if (!$result['success']) {
             $code = ($result['code'] ?? '') === 'UNAUTHORIZED' ? 403 : 400;
             http_response_code($code);
