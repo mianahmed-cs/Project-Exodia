@@ -26,6 +26,23 @@ function require_guest(): void {
     }
 }
 
+/**
+ * Enforces authentication for JSON API endpoints.
+ * Returns the current authenticated user array or exits with HTTP 401.
+ */
+function require_auth_api(): array {
+    if (!is_authenticated()) {
+        http_response_code(401);
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode([
+            'success' => false,
+            'error'   => 'Authentication required. Please sign in.'
+        ], JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+    return current_auth_user() ?? [];
+}
+
 function current_auth_user(): ?array {
     if (!is_authenticated()) {
         return null;
