@@ -40,9 +40,16 @@ $csrfToken = generate_csrf_token();
     <!-- Navigation Bar -->
     <nav class="dashboard-nav" aria-label="Main Navigation">
         <div class="nav-container">
-            <div class="brand-badge">
-                <span class="badge-dot"></span>
-                <span>PROJECT EXODIA</span>
+            <div class="nav-brand-group">
+                <div class="macos-traffic-lights" aria-hidden="true">
+                    <span class="traffic-dot traffic-red"></span>
+                    <span class="traffic-dot traffic-yellow"></span>
+                    <span class="traffic-dot traffic-green"></span>
+                </div>
+                <div class="brand-badge" style="margin-bottom: 0;">
+                    <span class="badge-dot"></span>
+                    <span>PROJECT EXODIA</span>
+                </div>
             </div>
 
             <div class="nav-links">
@@ -140,7 +147,7 @@ $csrfToken = generate_csrf_token();
 
     <!-- Footer -->
     <footer class="dashboard-footer">
-        <p>&copy; <?= date('Y') ?> Project Exodia. Web Technologies Course — Phase 2: User Discovery &amp; Contacts.</p>
+        <p>&copy; <?= date('Y') ?> Project Exodia. All rights reserved.</p>
     </footer>
 
     <!-- Client-side Logic -->
