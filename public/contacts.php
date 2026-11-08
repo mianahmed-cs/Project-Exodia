@@ -30,9 +30,9 @@ $csrfToken = generate_csrf_token();
     <meta name="description" content="Project Exodia — Operative Directory & Contact Management">
     <meta name="csrf-token" content="<?= sanitize_output($csrfToken) ?>">
     <title>Contacts & Discovery | Project Exodia</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="css/contacts.css">
+    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/auth.css?v=2.1">
+    <link rel="stylesheet" href="css/contacts.css?v=2.1">
 </head>
 <body class="dashboard-body">
     <div class="auth-bg-glow" aria-hidden="true"></div>
