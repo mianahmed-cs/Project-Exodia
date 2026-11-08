@@ -26,4 +26,8 @@ return [
         // and enables the Secure cookie flag automatically without breaking local HTTP.
         'session_secure' => false,
     ],
+    'storage' => [
+        // Private directory for uploaded photos and documents (strictly outside Apache public web root)
+        'attachments_dir' => dirname(__DIR__) . '/storage/attachments',
+    ],
 ];
