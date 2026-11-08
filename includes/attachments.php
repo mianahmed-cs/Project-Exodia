@@ -43,11 +43,29 @@ const MAX_DOCUMENT_SIZE = 26214400; // 25 MB
  * Get the private attachments storage directory.
  */
 function get_attachments_storage_dir(): string {
-    $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'attachments';
-    if (!is_dir($dir)) {
-        mkdir($dir, 0750, true);
+    static $resolved = null;
+    if ($resolved !== null) {
+        return $resolved;
     }
-    return $dir;
+
+    $configPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+    $dir = null;
+    if (file_exists($configPath)) {
+        $config = require $configPath;
+        if (!empty($config['storage']['attachments_dir'])) {
+            $dir = $config['storage']['attachments_dir'];
+        }
+    }
+
+    if ($dir === null) {
+        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'attachments';
+    }
+
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0750, true);
+    }
+    $resolved = realpath($dir) ?: $dir;
+    return $resolved;
 }
 
 /**
@@ -188,6 +206,15 @@ function save_attachment_message(
     }
 
     $storageDir = get_attachments_storage_dir();
+    if (!is_writable($storageDir)) {
+        error_log('Attachment storage directory is not writable by PHP process: ' . $storageDir);
+        return [
+            'success' => false,
+            'error'   => 'Failed to write uploaded file to private storage.',
+            'code'    => 'WRITE_FAILED',
+        ];
+    }
+
     $randomKey = bin2hex(random_bytes(16));
     $storageFilename = $randomKey . '.' . $val['ext'];
     $destPath = $storageDir . DIRECTORY_SEPARATOR . $storageFilename;
@@ -204,9 +231,11 @@ function save_attachment_message(
     }
 
     if (!$moved) {
+        $lastErr = error_get_last();
+        error_log('move_uploaded_file failed from ' . $tmpPath . ' to ' . $destPath . ': ' . ($lastErr['message'] ?? 'unknown error'));
         return ['success' => false, 'error' => 'Failed to write uploaded file to private storage.', 'code' => 'WRITE_FAILED'];
     }
-    chmod($destPath, 0640);
+    @chmod($destPath, 0660);
 
     // Validate reply_to_message_id if provided
     $replyIdParam = null;
@@ -372,12 +401,16 @@ function get_attachment_for_user(PDO $pdo, int $attachmentId, int $userId): ?arr
         return ['error' => 'DELETED_FOR_EVERYONE'];
     }
 
-    $projectRoot = dirname(__DIR__);
-    $absolutePath = $projectRoot . DIRECTORY_SEPARATOR . $row['file_path'];
-
-    // Strict path verification to prevent path traversal
     $storageDir = realpath(get_attachments_storage_dir());
-    $resolvedPath = realpath($absolutePath);
+    $filePath = (string)$row['file_path'];
+
+    if (strpos($filePath, DIRECTORY_SEPARATOR) === 0) {
+        $candidate = $filePath;
+    } else {
+        $candidate = dirname(__DIR__) . DIRECTORY_SEPARATOR . $filePath;
+    }
+
+    $resolvedPath = realpath($candidate);
 
     if (!$resolvedPath || strpos($resolvedPath, $storageDir) !== 0 || !file_exists($resolvedPath)) {
         return ['error' => 'FILE_NOT_FOUND'];
@@ -420,3 +453,4 @@ function get_attachments_for_messages(PDO $pdo, array $messageIds): array {
     }
     return $result;
 }
+
