@@ -34,10 +34,10 @@ $csrfToken = generate_csrf_token();
     <meta name="csrf-token" content="<?= sanitize_output($csrfToken) ?>">
     <meta name="user-id" content="<?= $userId ?>">
     <title>Messages | Project Exodia</title>
-    <link rel="stylesheet" href="css/style.css?v=2.1">
-    <link rel="stylesheet" href="css/auth.css?v=2.1">
-    <link rel="stylesheet" href="css/contacts.css?v=2.1">
-    <link rel="stylesheet" href="css/messaging.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
+    <link rel="stylesheet" href="css/auth.css?v=2.2">
+    <link rel="stylesheet" href="css/contacts.css?v=2.2">
+    <link rel="stylesheet" href="css/messaging.css?v=2.2">
 </head>
 <body class="dashboard-body" style="overflow: hidden;">
     <div class="auth-bg-glow" aria-hidden="true"></div>
@@ -162,6 +162,19 @@ $csrfToken = generate_csrf_token();
 
             <!-- Message Composer -->
             <footer id="chatComposer" class="chat-composer" style="display: none;">
+                <!-- Quoted Reply Composer Bar -->
+                <div id="composerReplyBar" class="composer-reply-bar">
+                    <div class="reply-bar-content">
+                        <span class="reply-bar-title" id="replyBarTitle">Replying to Operative</span>
+                        <span class="reply-bar-text" id="replyBarText">Original message preview</span>
+                    </div>
+                    <button type="button" id="cancelReplyBtn" class="reply-bar-close" aria-label="Cancel reply">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
                 <div class="composer-pill">
                     <textarea
                         id="messageInput"
@@ -182,6 +195,6 @@ $csrfToken = generate_csrf_token();
     </div>
 
     <!-- Client-side Logic -->
-    <script src="js/messaging.js"></script>
+    <script src="js/messaging.js?v=2.2"></script>
 </body>
 </html>
